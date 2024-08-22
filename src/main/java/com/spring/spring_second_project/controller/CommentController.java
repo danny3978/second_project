@@ -3,15 +3,12 @@ package com.spring.spring_second_project.controller;
 
 import com.spring.spring_second_project.dto.CommentRequestDto;
 import com.spring.spring_second_project.dto.CommentResponseDto;
-import com.spring.spring_second_project.entity.CommentEntity;
-import com.spring.spring_second_project.repository.CommentRepository;
 import com.spring.spring_second_project.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/comment")
@@ -36,5 +33,19 @@ public class CommentController {
     @GetMapping("/")
     public List<CommentResponseDto> commentFindAll(){
         return service.commentFindAll();
+    }
+
+    //댓글 수정
+    @PutMapping("/{id}")
+    public CommentResponseDto commentUpdate(@Valid @PathVariable Long id, @Valid @RequestBody CommentRequestDto requestDto){
+        return service.commentUpdate(id, requestDto);
+    }
+
+
+    //댓글 삭제
+    @DeleteMapping("/{id}")
+    public String commentDelete(@Valid @PathVariable Long id){
+        service.commentDelete(id);
+        return "제거 완료";
     }
 }

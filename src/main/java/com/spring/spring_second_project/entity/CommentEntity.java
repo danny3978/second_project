@@ -18,8 +18,8 @@ public class CommentEntity extends Timetamped{
     private Long id;
     private String comment;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "schedule_id")
     private ScheduleEntity scheduleEntity;
 
 

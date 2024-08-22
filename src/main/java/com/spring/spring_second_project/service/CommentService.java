@@ -7,15 +7,12 @@ import com.spring.spring_second_project.entity.CommentEntity;
 import com.spring.spring_second_project.entity.ScheduleEntity;
 import com.spring.spring_second_project.repository.CommentRepository;
 import com.spring.spring_second_project.repository.ScheduleRepository;
-import jakarta.validation.Valid;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Order;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -56,5 +53,26 @@ public class CommentService {
         }
 
         return responseDtos;
+    }
+
+
+    //댓글 수정
+    @Transactional
+    public CommentResponseDto commentUpdate(Long id, CommentRequestDto requestDto) {
+        CommentEntity entity = repository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("없는 번호입니다."));
+
+        entity.setComment(requestDto.getComment());
+
+        return new CommentResponseDto(entity);
+    }
+
+
+    //댓글 삭제
+    public void commentDelete(Long id){
+        CommentEntity entity = repository.findById(id).orElseThrow(()
+        -> new IllegalArgumentException("없는 번호입니다."));
+
+        repository.delete(entity);
     }
 }

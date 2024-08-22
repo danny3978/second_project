@@ -20,6 +20,7 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
 
+    //일정 등록
     public ScheduleResponseDto createSchedule(ScheduleRequestDto requestDto) {
 
         ScheduleEntity scheduleEntity = new ScheduleEntity(requestDto);
@@ -29,6 +30,8 @@ public class ScheduleService {
         return new ScheduleResponseDto(saveSchedule);
     }
 
+
+    //일정 단건 조회
     public ScheduleResponseDto findId(Long id) {
        ScheduleEntity scheduleEntity =  scheduleRepository.findById(id).orElseThrow(() ->
                new EntityNotFoundException("값을 못 찾았습니다."));
@@ -36,6 +39,7 @@ public class ScheduleService {
        return new ScheduleResponseDto(scheduleEntity);
     }
 
+    //일정 수정
     @Transactional
     public ScheduleResponseDto update(@Validated Long id, @Validated ScheduleRequestDto requestDto) {
             ScheduleEntity scheduleEntity = scheduleRepository.findById(id)
