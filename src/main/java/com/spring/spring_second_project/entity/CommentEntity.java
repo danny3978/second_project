@@ -2,7 +2,6 @@ package com.spring.spring_second_project.entity;
 
 import com.spring.spring_second_project.dto.CommentRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
