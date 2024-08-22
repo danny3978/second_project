@@ -1,6 +1,5 @@
 package com.spring.spring_second_project.dto;
 
-import com.spring.spring_second_project.entity.ScheduleEntity;
 import lombok.Getter;
 
 @Getter

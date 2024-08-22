@@ -2,11 +2,9 @@ package com.spring.spring_second_project.dto;
 
 
 import com.spring.spring_second_project.entity.ScheduleEntity;
-import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter

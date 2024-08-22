@@ -2,16 +2,10 @@ package com.spring.spring_second_project.controller;
 
 import com.spring.spring_second_project.dto.ScheduleRequestDto;
 import com.spring.spring_second_project.dto.ScheduleResponseDto;
-import com.spring.spring_second_project.entity.ScheduleEntity;
 import com.spring.spring_second_project.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import javax.naming.Binding;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/schedule")
