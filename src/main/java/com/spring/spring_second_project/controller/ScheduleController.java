@@ -16,6 +16,7 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
+
     //일정 등록
     @PostMapping("/")
     public ScheduleResponseDto createSchedule(@RequestBody ScheduleRequestDto requestDto) {
