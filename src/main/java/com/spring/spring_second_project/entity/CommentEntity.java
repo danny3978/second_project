@@ -19,8 +19,8 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String commentWriteDay;
-    private String commentUpdateDay;
+    private String commentWriteDate;
+    private String commentUpdateDate;
 
     @OneToOne
     @JoinColumn(name = "user_id")

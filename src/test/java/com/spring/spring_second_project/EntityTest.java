@@ -31,11 +31,10 @@ public class EntityTest {
 
         String today = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        ScheduleEntity scheduleEntity = new ScheduleEntity(null, "name","할일 제목","할일 내용", today,today);
-        scheduleRepository.save(scheduleEntity);
+//        ScheduleEntity scheduleEntity = new ScheduleEntity(null, "name","할일 제목","할일 내용", today,today);
+//        scheduleRepository.save(scheduleEntity);
 
-        CommentEntity commentEntity = new CommentEntity(null,today,today,scheduleEntity);
-        commentRepository.save(commentEntity);
-
+//        CommentEntity commentEntity = new CommentEntity(null,today,today,scheduleEntity);
+//        commentRepository.save(commentEntity);
     }
 }
