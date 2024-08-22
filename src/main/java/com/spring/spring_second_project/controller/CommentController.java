@@ -3,11 +3,15 @@ package com.spring.spring_second_project.controller;
 
 import com.spring.spring_second_project.dto.CommentRequestDto;
 import com.spring.spring_second_project.dto.CommentResponseDto;
+import com.spring.spring_second_project.entity.CommentEntity;
 import com.spring.spring_second_project.repository.CommentRepository;
 import com.spring.spring_second_project.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/comment")
@@ -26,5 +30,11 @@ public class CommentController {
     @GetMapping("/{id}")
     public CommentResponseDto commentFindId(@Valid @PathVariable Long id){
         return service.commentFindId(id);
+    }
+
+    //댓글 전체 조회
+    @GetMapping("/")
+    public List<CommentResponseDto> commentFindAll(){
+        return service.commentFindAll();
     }
 }
