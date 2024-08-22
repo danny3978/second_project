@@ -4,6 +4,9 @@ import com.spring.spring_second_project.dto.ScheduleRequestDto;
 import com.spring.spring_second_project.dto.ScheduleResponseDto;
 import com.spring.spring_second_project.entity.ScheduleEntity;
 import com.spring.spring_second_project.repository.ScheduleRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +29,18 @@ public class ScheduleService {
         return new ScheduleResponseDto(saveSchedule);
     }
 
-    public Optional<ScheduleEntity> findId(Long id) {
-       return scheduleRepository.findById(id);
+    public ScheduleResponseDto findId(Long id) {
+       ScheduleEntity scheduleEntity =  scheduleRepository.findById(id).orElseThrow(() ->
+               new EntityNotFoundException("값을 못 찾았습니다."));
+
+       return new ScheduleResponseDto(scheduleEntity);
+    }
+
+    @Transactional
+    public ScheduleResponseDto update(@Validated Long id, @Validated ScheduleRequestDto requestDto) {
+            ScheduleEntity scheduleEntity = scheduleRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("값을 못 찾았습니다."));
+            scheduleEntity.updateSchedule(requestDto);
+            return new ScheduleResponseDto(scheduleEntity);
     }
 }

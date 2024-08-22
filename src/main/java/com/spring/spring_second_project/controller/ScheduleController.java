@@ -23,17 +23,21 @@ public class ScheduleController {
 
     //일정 등록
     @PostMapping("/")
-    public ScheduleResponseDto createSchedule(@Valid @RequestBody ScheduleRequestDto requestDto, BindingResult result) throws MethodArgumentNotValidException {
+    public ScheduleResponseDto createSchedule(@Valid @RequestBody ScheduleRequestDto requestDto) {
         return scheduleService.createSchedule(requestDto);
     }
 
     //일정 단건 조회
     @GetMapping("/{id}")
-    public Optional<ScheduleEntity> findIdSchedule(@PathVariable Long id){
+    public ScheduleResponseDto findIdSchedule(@PathVariable Long id){
         return scheduleService.findId(id);
     }
 
-
+    //일정 수정
+    @PutMapping("/{id}")
+    public ScheduleResponseDto updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto){
+        return scheduleService.update(id, requestDto);
+    }
 
 }
 

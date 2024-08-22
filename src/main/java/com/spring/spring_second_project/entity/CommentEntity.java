@@ -5,22 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
 @Entity
 @Table(name = "comment")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentEntity {
+public class CommentEntity extends Timetamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String commentWriteDate;
-    private String commentUpdateDate;
 
     @OneToOne
     @JoinColumn(name = "user_id")
