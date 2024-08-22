@@ -2,17 +2,13 @@ package com.spring.spring_second_project.entity;
 
 import com.spring.spring_second_project.dto.ScheduleRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.internal.build.AllowNonPortable;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Entity
 @Table(name = "schedule")
@@ -25,7 +21,9 @@ public class ScheduleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "작성자명을 꼭 적어야합니다.")
     private String username;
+
     private String toDoTitle;
     private String toDoComment;
     private String scheduleWriteDate;

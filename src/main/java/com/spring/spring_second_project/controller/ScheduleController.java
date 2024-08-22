@@ -2,12 +2,16 @@ package com.spring.spring_second_project.controller;
 
 import com.spring.spring_second_project.dto.ScheduleRequestDto;
 import com.spring.spring_second_project.dto.ScheduleResponseDto;
+import com.spring.spring_second_project.entity.ScheduleEntity;
 import com.spring.spring_second_project.service.ScheduleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
+
+import javax.naming.Binding;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/schedule")
@@ -19,9 +23,17 @@ public class ScheduleController {
 
     //일정 등록
     @PostMapping("/")
-    public ScheduleResponseDto createSchedule(@RequestBody ScheduleRequestDto requestDto) {
+    public ScheduleResponseDto createSchedule(@Valid @RequestBody ScheduleRequestDto requestDto, BindingResult result) throws MethodArgumentNotValidException {
         return scheduleService.createSchedule(requestDto);
     }
+
+    //일정 단건 조회
+    @GetMapping("/{id}")
+    public Optional<ScheduleEntity> findIdSchedule(@PathVariable Long id){
+        return scheduleService.findId(id);
+    }
+
+
 
 }
 
