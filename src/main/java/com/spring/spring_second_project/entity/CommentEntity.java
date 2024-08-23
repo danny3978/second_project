@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CommentEntity extends Timetamped{
+public class CommentEntity extends Timetamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,6 @@ public class CommentEntity extends Timetamped{
     @ManyToOne
     @JoinColumn(name = "schedule_id")
     private ScheduleEntity scheduleEntity;
-
 
     public CommentEntity(CommentRequestDto requestDto) {
         this.comment = requestDto.getComment();

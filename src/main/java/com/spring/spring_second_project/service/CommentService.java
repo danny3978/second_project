@@ -1,78 +1,74 @@
 package com.spring.spring_second_project.service;
 
-
 import com.spring.spring_second_project.dto.CommentRequestDto;
 import com.spring.spring_second_project.dto.CommentResponseDto;
 import com.spring.spring_second_project.entity.CommentEntity;
 import com.spring.spring_second_project.entity.ScheduleEntity;
 import com.spring.spring_second_project.repository.CommentRepository;
 import com.spring.spring_second_project.repository.ScheduleRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService {
 
-    private final CommentRepository repository;
+
+    private final CommentRepository commentRepository;
     private final ScheduleRepository scheduleRepository;
 
-
-    //댓글 등록
-    public CommentResponseDto create(CommentRequestDto requestDto) {
-        ScheduleEntity scheduleEntity = scheduleRepository.findById(requestDto.getUser_id()).
-                orElseThrow(() -> new IllegalArgumentException("작성자가 없습니다."));
-
-        CommentEntity commentEntity = new CommentEntity(requestDto);
-        commentEntity.setScheduleEntity(scheduleEntity);
-
-        repository.save(commentEntity);
-
-        return new CommentResponseDto(commentEntity);
+    public CommentEntity createComment(Long scheduleId, CommentRequestDto requestDto) {
+        ScheduleEntity schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new RuntimeException("Schedule not found"));
+        CommentEntity comment = new CommentEntity(requestDto);
+        comment.setScheduleEntity(schedule);
+        return commentRepository.save(comment);
     }
 
-    //댓글 단건 조회
-    public CommentResponseDto commentFindId(Long id) {
-        CommentEntity entity = repository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("댓글 번호가 없습니다."));
-
-        return new CommentResponseDto(entity);
-    }
-
-    //댓글 전체 조회
-    public List<CommentResponseDto> commentFindAll() {
-        List<CommentEntity> entities = repository.findAll();
-        List<CommentResponseDto> responseDtos = new ArrayList<>();
-
-        for(CommentEntity e : entities){
-            responseDtos.add(new CommentResponseDto(e));
-        }
-
-        return responseDtos;
-    }
-
-
-    //댓글 수정
     @Transactional
-    public CommentResponseDto commentUpdate(Long id, CommentRequestDto requestDto) {
-        CommentEntity entity = repository.findById(id).orElseThrow(()
-                -> new IllegalArgumentException("없는 번호입니다."));
-
-        entity.setComment(requestDto.getComment());
-
-        return new CommentResponseDto(entity);
+    public CommentEntity updateComment(Long id, CommentRequestDto requestDto) {
+        CommentEntity comment = commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+        comment.setComment(requestDto.getComment());
+        return commentRepository.save(comment);
     }
 
+    @Transactional
+    public void deleteComment(Long id) {
+        CommentEntity comment = commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+        commentRepository.delete(comment);
+    }
 
-    //댓글 삭제
-    public void commentDelete(Long id){
-        CommentEntity entity = repository.findById(id).orElseThrow(()
-        -> new IllegalArgumentException("없는 번호입니다."));
+    public Optional<CommentResponseDto> getCommentById(Long id) {
 
-        repository.delete(entity);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy. MM. dd. HH:mm");
+        return commentRepository.findById(id).map(comment -> new CommentResponseDto(
+                comment.getId(),
+                comment.getComment(),
+                formatter.format(comment.getCreateAt()),
+                formatter.format(comment.getModifiedAt())
+        ));
+    }
+
+    public List<CommentResponseDto> getComment() {
+        List<CommentEntity> commentEntities = commentRepository.findAll(Sort.by(Sort.Order.desc("id")));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy. MM. dd. HH:mm");
+
+        return commentEntities.stream().map(commentEntity -> new CommentResponseDto(
+                commentEntity.getId(),
+                commentEntity.getComment(),
+                formatter.format(commentEntity.getCreateAt()),
+                formatter.format(commentEntity.getModifiedAt())
+        )).toList();
     }
 }

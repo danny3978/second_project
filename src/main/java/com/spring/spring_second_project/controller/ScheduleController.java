@@ -2,36 +2,54 @@ package com.spring.spring_second_project.controller;
 
 import com.spring.spring_second_project.dto.ScheduleRequestDto;
 import com.spring.spring_second_project.dto.ScheduleResponseDto;
+import com.spring.spring_second_project.entity.ScheduleEntity;
+import com.spring.spring_second_project.repository.ScheduleRepository;
 import com.spring.spring_second_project.service.ScheduleService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/schedule")
-@RequiredArgsConstructor
+@RequestMapping("/schedules")
 public class ScheduleController {
 
-    private final ScheduleService scheduleService;
+    @Autowired
+    private ScheduleService scheduleService;
 
-
-    //일정 등록
-    @PostMapping("/")
-    public ScheduleResponseDto createSchedule(@Valid @RequestBody ScheduleRequestDto requestDto) {
-        return scheduleService.createSchedule(requestDto);
+    @PostMapping
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto requestDto) {
+        ScheduleEntity schedule = scheduleService.createSchedule(requestDto);
+        ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(schedule);
+        return ResponseEntity.ok(scheduleResponseDto);
     }
 
-    //일정 단건 조회
-    @GetMapping("/{id}")
-    public ScheduleResponseDto findIdSchedule(@PathVariable Long id){
-        return scheduleService.findId(id);
-    }
-
-    //일정 수정
     @PutMapping("/{id}")
-    public ScheduleResponseDto updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto){
-        return scheduleService.update(id, requestDto);
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(
+            @PathVariable Long id,
+            @RequestBody ScheduleRequestDto requestDto) {
+        ScheduleEntity updatedSchedule = scheduleService.updateSchedule(id, requestDto);
+
+        return ResponseEntity.ok(new ScheduleResponseDto(updatedSchedule));
     }
 
-}
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id) {
+        scheduleService.deleteSchedule(id);
+        return ResponseEntity.noContent().build();
+    }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ScheduleResponseDto> getScheduleById(@PathVariable Long id) {
+        ScheduleResponseDto schedule = scheduleService.getScheduleById(id);
+        return ResponseEntity.ok(schedule);
+    }
+
+
+    @GetMapping
+    public ResponseEntity<Page<ScheduleResponseDto>> getPage(@RequestParam(value = "page" , defaultValue = "0") int page,
+                                                            @RequestParam(value = "size", defaultValue = "10") int size){
+       Page<ScheduleResponseDto> schedule = scheduleService.getPage(page, size);
+        return ResponseEntity.ok(schedule   );
+    }
+}
