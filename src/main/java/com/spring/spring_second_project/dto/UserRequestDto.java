@@ -1,16 +1,18 @@
 package com.spring.spring_second_project.dto;
 
-import jakarta.validation.constraints.Min;
+
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-public class ScheduleRequestDto {
+@AllArgsConstructor
+public class UserRequestDto {
 
     @NotNull
-    private String toDoTitle;
+    private String username;
 
     @NotNull
-    private String toDoComment;
+    private String email;
 
 }

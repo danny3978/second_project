@@ -5,6 +5,7 @@ import com.spring.spring_second_project.dto.ScheduleResponseDto;
 import com.spring.spring_second_project.entity.ScheduleEntity;
 import com.spring.spring_second_project.repository.ScheduleRepository;
 import com.spring.spring_second_project.service.ScheduleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +13,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/schedules")
+@RequiredArgsConstructor
 public class ScheduleController {
 
-    @Autowired
-    private ScheduleService scheduleService;
 
-    @PostMapping
-    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto requestDto) {
-        ScheduleEntity schedule = scheduleService.createSchedule(requestDto);
+    private final ScheduleService scheduleService;
+
+    @PostMapping("/users/{id}")
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto) {
+        ScheduleEntity schedule = scheduleService.createSchedule(id, requestDto);
         ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(schedule);
         return ResponseEntity.ok(scheduleResponseDto);
     }
@@ -50,6 +52,9 @@ public class ScheduleController {
     public ResponseEntity<Page<ScheduleResponseDto>> getPage(@RequestParam(value = "page" , defaultValue = "0") int page,
                                                             @RequestParam(value = "size", defaultValue = "10") int size){
        Page<ScheduleResponseDto> schedule = scheduleService.getPage(page, size);
-        return ResponseEntity.ok(schedule   );
+        return ResponseEntity.ok(schedule);
     }
+
+
+
 }

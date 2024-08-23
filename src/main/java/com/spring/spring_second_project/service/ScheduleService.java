@@ -3,7 +3,10 @@ package com.spring.spring_second_project.service;
 import com.spring.spring_second_project.dto.ScheduleRequestDto;
 import com.spring.spring_second_project.dto.ScheduleResponseDto;
 import com.spring.spring_second_project.entity.ScheduleEntity;
+import com.spring.spring_second_project.entity.UserEntity;
 import com.spring.spring_second_project.repository.ScheduleRepository;
+import com.spring.spring_second_project.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,39 +20,39 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ScheduleService {
 
-    @Autowired
-    private ScheduleRepository scheduleRepository;
+    private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
 
-    @Transactional
-    public ScheduleEntity createSchedule(ScheduleRequestDto requestDto) {
-        ScheduleEntity schedule = new ScheduleEntity(requestDto);
-        return scheduleRepository.save(schedule);
+
+    public ScheduleEntity createSchedule(Long id, ScheduleRequestDto requestDto) {
+        UserEntity entity = userRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("사용자가 없습니다."));
+
+        ScheduleEntity scheduleEntity = new ScheduleEntity(requestDto);
+
+        scheduleEntity.setUserEntity(entity);
+
+        return scheduleRepository.save(scheduleEntity);
     }
 
     @Transactional
     public ScheduleEntity updateSchedule(Long id, ScheduleRequestDto requestDto) {
-        ScheduleEntity schedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Schedule not found"));
+        ScheduleEntity schedule = finById(id);
         schedule.updateSchedule(requestDto);
         return scheduleRepository.save(schedule);
     }
 
     @Transactional
     public void deleteSchedule(Long id) {
-        ScheduleEntity schedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Schedule not found"));
-        scheduleRepository.delete(schedule);
+        scheduleRepository.delete(finById(id));
     }
 
-    @Transactional(readOnly = true)
+
     public ScheduleResponseDto getScheduleById(Long id) {
-        ScheduleEntity schedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Schedule not found"));
-
-
-        return new ScheduleResponseDto(schedule);
+        return new ScheduleResponseDto(finById(id));
     }
 
 
@@ -61,12 +64,16 @@ public class ScheduleService {
 
         return entities.map(entity -> new ScheduleResponseDto(
                 entity.getId(),
-                entity.getUsername(),
+                entity.getUserEntity().getId(),
                 entity.getToDoTitle(),
                 entity.getToDoComment(),
-                formatter.format(entity.getCreateAt()),
-                formatter.format(entity.getModifiedAt()),
                 entity.getCommentEntities().size()
         ));
+    }
+
+
+    public ScheduleEntity finById(Long id){
+        return scheduleRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("작성한 일정이 없습니다."));
     }
 }
