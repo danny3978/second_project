@@ -42,8 +42,4 @@ public class ScheduleEntity extends Timetamped {
         commentEntity.setScheduleEntity(this);
     }
 
-    public void removeComment(CommentEntity commentEntity) {
-        this.commentEntities.remove(commentEntity);
-        commentEntity.setScheduleEntity(null);
-    }
 }

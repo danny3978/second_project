@@ -46,7 +46,7 @@ public class ScheduleController {
     }
 
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<Page<ScheduleResponseDto>> getPage(@RequestParam(value = "page" , defaultValue = "0") int page,
                                                             @RequestParam(value = "size", defaultValue = "10") int size){
        Page<ScheduleResponseDto> schedule = scheduleService.getPage(page, size);
