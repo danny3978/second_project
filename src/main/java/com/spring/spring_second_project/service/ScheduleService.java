@@ -7,7 +7,7 @@ import com.spring.spring_second_project.entity.UserEntity;
 import com.spring.spring_second_project.repository.ScheduleRepository;
 import com.spring.spring_second_project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -64,9 +64,10 @@ public class ScheduleService {
 
         return entities.map(entity -> new ScheduleResponseDto(
                 entity.getId(),
-                entity.getUserEntity().getId(),
                 entity.getToDoTitle(),
                 entity.getToDoComment(),
+                formatter.format(entity.getCreateAt()),
+                formatter.format(entity.getModifiedAt()),
                 entity.getCommentEntities().size()
         ));
     }

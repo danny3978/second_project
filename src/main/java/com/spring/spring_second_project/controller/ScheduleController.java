@@ -3,10 +3,8 @@ package com.spring.spring_second_project.controller;
 import com.spring.spring_second_project.dto.ScheduleRequestDto;
 import com.spring.spring_second_project.dto.ScheduleResponseDto;
 import com.spring.spring_second_project.entity.ScheduleEntity;
-import com.spring.spring_second_project.repository.ScheduleRepository;
 import com.spring.spring_second_project.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +25,7 @@ public class ScheduleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ScheduleResponseDto> updateSchedule(
-            @PathVariable Long id,
-            @RequestBody ScheduleRequestDto requestDto) {
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto) {
         ScheduleEntity updatedSchedule = scheduleService.updateSchedule(id, requestDto);
 
         return ResponseEntity.ok(new ScheduleResponseDto(updatedSchedule));
@@ -42,9 +38,9 @@ public class ScheduleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ScheduleResponseDto> getScheduleById(@PathVariable Long id) {
-        ScheduleResponseDto schedule = scheduleService.getScheduleById(id);
-        return ResponseEntity.ok(schedule);
+    public ResponseEntity<ScheduleResponseDto> findById(@PathVariable Long id){
+        ScheduleResponseDto responseDto = scheduleService.getScheduleById(id);
+        return ResponseEntity.ok(responseDto);
     }
 
 

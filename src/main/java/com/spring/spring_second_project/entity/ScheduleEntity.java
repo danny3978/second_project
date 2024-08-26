@@ -26,7 +26,7 @@ public class ScheduleEntity extends Timetamped {
     @OneToMany(mappedBy = "scheduleEntity", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CommentEntity> commentEntities = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 

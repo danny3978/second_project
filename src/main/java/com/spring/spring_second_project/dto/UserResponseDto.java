@@ -4,7 +4,6 @@ package com.spring.spring_second_project.dto;
 import com.spring.spring_second_project.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.format.DateTimeFormatter;
 

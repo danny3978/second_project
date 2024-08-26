@@ -51,7 +51,9 @@ public class CommentService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy. MM. dd. HH:mm");
         return commentRepository.findById(id).map(comment -> new CommentResponseDto(
                 comment.getId(),
-                comment.getComment()
+                comment.getComment(),
+                formatter.format(comment.getCreateAt()),
+                formatter.format(comment.getModifiedAt())
         ));
     }
 
@@ -62,7 +64,9 @@ public class CommentService {
 
         return commentEntities.stream().map(commentEntity -> new CommentResponseDto(
                 commentEntity.getId(),
-                commentEntity.getComment()
+                commentEntity.getComment(),
+                formatter.format(commentEntity.getCreateAt()),
+                formatter.format(commentEntity.getModifiedAt())
         )).toList();
     }
 }

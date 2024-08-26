@@ -1,8 +1,6 @@
 package com.spring.spring_second_project.controller;
 
 
-import com.spring.spring_second_project.dto.ChangeUserEmail;
-import com.spring.spring_second_project.dto.ChangeUsername;
 import com.spring.spring_second_project.dto.UserRequestDto;
 import com.spring.spring_second_project.dto.UserResponseDto;
 import com.spring.spring_second_project.entity.UserEntity;
@@ -40,19 +38,7 @@ public class UserController{
         return ResponseEntity.ok(userResponseDtos);
     }
 
-    @PutMapping("/username/{username}")
-    public ResponseEntity<UserResponseDto> usernameChange(@PathVariable String username, @RequestBody ChangeUsername changeName){
-        UserEntity entity = userService.updateUser(username, changeName);
-        return ResponseEntity.ok(new UserResponseDto(entity));
-    }
-
-    @PutMapping("/userEmail/{username}")
-    public ResponseEntity<UserResponseDto> userEmailChange(@PathVariable String username, @RequestBody ChangeUserEmail changeEmail){
-        UserEntity entity = userService.updateEmail(username, changeEmail);
-        return ResponseEntity.ok(new UserResponseDto(entity));
-    }
-
-    @PutMapping("/user/{username}")
+    @PutMapping("/{username}")
     public ResponseEntity<UserResponseDto> userChange(@PathVariable String username, @RequestBody UserRequestDto requestDto){
         UserEntity entity = userService.update(username, requestDto);
         return ResponseEntity.ok(new UserResponseDto(entity));

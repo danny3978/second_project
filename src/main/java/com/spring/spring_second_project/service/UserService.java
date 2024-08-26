@@ -1,8 +1,6 @@
 package com.spring.spring_second_project.service;
 
 
-import com.spring.spring_second_project.dto.ChangeUserEmail;
-import com.spring.spring_second_project.dto.ChangeUsername;
 import com.spring.spring_second_project.dto.UserRequestDto;
 import com.spring.spring_second_project.dto.UserResponseDto;
 import com.spring.spring_second_project.entity.UserEntity;
@@ -22,10 +20,6 @@ public class UserService {
 
     public UserEntity addUser(UserRequestDto requestDto) {
         UserEntity userEntity = new UserEntity(requestDto);
-
-        if(userEntity.getEmail().equals(requestDto.getEmail())){
-            throw new RuntimeException("중복된 이메일입니다.");
-        }
 
         return userRepository.save(userEntity);
     }
@@ -47,20 +41,6 @@ public class UserService {
                 formatter.format(userEntity.getModifiedAt())
         )).toList();
 
-    }
-
-    @Transactional
-    public UserEntity updateUser(String username, ChangeUsername changeName) {
-        UserEntity entity = findByUsername(username);
-        entity.setUsername(changeName.getUsername());
-        return entity;
-    }
-
-    @Transactional
-    public UserEntity updateEmail(String username, ChangeUserEmail changeEmail) {
-        UserEntity entity = findByUsername(username);
-        entity.setEmail(changeEmail.getEmail());
-        return entity;
     }
 
     @Transactional
