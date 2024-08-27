@@ -18,14 +18,15 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserEntity addUser(UserRequestDto requestDto) {
+    public UserResponseDto addUser(UserRequestDto requestDto) {
         UserEntity userEntity = new UserEntity(requestDto);
-
-        return userRepository.save(userEntity);
+        userRepository.save(userEntity);
+        return new UserResponseDto(userEntity);
     }
 
-    public UserEntity findUser(String username) {
-        return findByUsername(username);
+    public UserResponseDto findUser(String username) {
+        UserEntity entity = findByUsername(username);
+        return new UserResponseDto(entity);
     }
 
 
@@ -44,11 +45,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserEntity update(String username, UserRequestDto requestDto) {
+    public UserResponseDto update(String username, UserRequestDto requestDto) {
         UserEntity entity = findByUsername(username);
-        entity.setUsername(requestDto.getUsername());
-        entity.setEmail(requestDto.getEmail());
-        return entity;
+        entity.update(requestDto);
+        return new UserResponseDto(entity);
     }
 
     @Transactional

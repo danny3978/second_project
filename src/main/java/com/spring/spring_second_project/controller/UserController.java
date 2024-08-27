@@ -6,6 +6,8 @@ import com.spring.spring_second_project.dto.UserResponseDto;
 import com.spring.spring_second_project.entity.UserEntity;
 import com.spring.spring_second_project.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,34 +22,31 @@ public class UserController{
 
     @PostMapping
     public ResponseEntity<UserResponseDto> addUser(@RequestBody UserRequestDto requestDto){
-        UserEntity entity = userService.addUser(requestDto);
-        return ResponseEntity.ok(new UserResponseDto(entity));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.addUser(requestDto));
     }
 
 
     @GetMapping("/{username}")
     public ResponseEntity<UserResponseDto> findUser(@PathVariable String username){
-        UserEntity entity = userService.findUser(username);
-        return ResponseEntity.ok(new UserResponseDto(entity));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findUser(username));
     }
 
 
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> findAll(){
-        List<UserResponseDto> userResponseDtos = userService.findAll();
-        return ResponseEntity.ok(userResponseDtos);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
     }
 
     @PutMapping("/{username}")
     public ResponseEntity<UserResponseDto> userChange(@PathVariable String username, @RequestBody UserRequestDto requestDto){
-        UserEntity entity = userService.update(username, requestDto);
-        return ResponseEntity.ok(new UserResponseDto(entity));
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(username, requestDto));
     }
 
     @DeleteMapping("/{username}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String username){
+    public ResponseEntity<String> deleteUser(@PathVariable String username){
         userService.deleteUser(username);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("제거 완료");
     }
 
 }

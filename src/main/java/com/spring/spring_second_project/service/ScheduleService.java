@@ -27,7 +27,7 @@ public class ScheduleService {
     private final UserRepository userRepository;
 
 
-    public ScheduleEntity createSchedule(Long id, ScheduleRequestDto requestDto) {
+    public ScheduleResponseDto createSchedule(Long id, ScheduleRequestDto requestDto) {
         UserEntity entity = userRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("사용자가 없습니다."));
 
@@ -35,14 +35,14 @@ public class ScheduleService {
 
         scheduleEntity.setUserEntity(entity);
 
-        return scheduleRepository.save(scheduleEntity);
+        return new ScheduleResponseDto(scheduleEntity);
     }
 
     @Transactional
-    public ScheduleEntity updateSchedule(Long id, ScheduleRequestDto requestDto) {
+    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto requestDto) {
         ScheduleEntity schedule = finById(id);
         schedule.updateSchedule(requestDto);
-        return scheduleRepository.save(schedule);
+        return new ScheduleResponseDto(schedule);
     }
 
     @Transactional

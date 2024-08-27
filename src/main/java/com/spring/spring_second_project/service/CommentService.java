@@ -23,20 +23,21 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final ScheduleRepository scheduleRepository;
 
-    public CommentEntity createComment(Long scheduleId, CommentRequestDto requestDto) {
+    public CommentResponseDto createComment(Long scheduleId, CommentRequestDto requestDto) {
         ScheduleEntity schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자가 작성한 일정이 없습니다."));
         CommentEntity comment = new CommentEntity(requestDto);
         comment.setScheduleEntity(schedule);
-        return commentRepository.save(comment);
+        commentRepository.save(comment);
+        return new CommentResponseDto(comment);
     }
 
     @Transactional
-    public CommentEntity updateComment(Long id, CommentRequestDto requestDto) {
+    public CommentResponseDto updateComment(Long id, CommentRequestDto requestDto) {
         CommentEntity comment = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("작성한 댓글이 없습니다."));
-        comment.setComment(requestDto.getComment());
-        return commentRepository.save(comment);
+        comment.update(requestDto.getComment());
+        return new CommentResponseDto(comment);
     }
 
     @Transactional

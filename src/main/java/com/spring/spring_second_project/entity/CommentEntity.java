@@ -25,4 +25,8 @@ public class CommentEntity extends Timetamped {
     public CommentEntity(CommentRequestDto requestDto) {
         this.comment = requestDto.getComment();
     }
+
+    public void update(String comment){
+        this.comment = comment;
+    }
 }

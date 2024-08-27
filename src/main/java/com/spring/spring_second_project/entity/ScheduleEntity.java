@@ -44,5 +44,4 @@ public class ScheduleEntity extends Timetamped {
         this.commentEntities.add(commentEntity);
         commentEntity.setScheduleEntity(this);
     }
-
 }
